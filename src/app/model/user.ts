@@ -1,15 +1,21 @@
-export class user {
+import { LoginData } from "./LoginData";
+import { PersonalDetails } from "./PersonalDetails";
+import { RegistrationInfo } from "./RegistrationInfo";
+
+export class User {
     userName?: string;
+
     primaryMobileNumber?:string;
+
     primaryEmailAddress?: string;
-    registrationInfo?: registrationInfo;
-}
 
+    isUserNameChanged?: boolean;
 
-export class registrationInfo{
-    emailAddress?: string;
-    mobileNumber?: string;
-    password?: string;
-    registrationDate?: string;
-    userName?: string
+    loginData?: LoginData;
+
+    registrationInfo?: RegistrationInfo;
+
+    personalDetails?: PersonalDetails;
+    
+    isUsersAllDetailsSaved?: boolean;
 }

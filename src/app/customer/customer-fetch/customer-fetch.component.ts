@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { user } from 'src/app/model/user';
+import { User } from 'src/app/model/user';
 
 @Component({
   selector: 'app-customer-fetch',
@@ -7,12 +7,12 @@ import { user } from 'src/app/model/user';
   styleUrls: ['./customer-fetch.component.css']
 })
 export class CustomerFetchComponent {
-  us: user;
+  user: User;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.us={
+    this.user={
       primaryEmailAddress:'sg@gmail.com',
       userName: 'string',
       primaryMobileNumber:'9564961878',
