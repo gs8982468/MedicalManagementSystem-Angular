@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { user } from '../model/user';
+import { user } from 'src/app/model/user';
 
 @Component({
   selector: 'app-customer-fetch',
