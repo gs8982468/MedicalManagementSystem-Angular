@@ -16,7 +16,6 @@ export class UserService {
   // }
 
   getUser(){
-    console.log("In service::: ");
     return this.httpClient.get(`${this.baseUrl}`);
   }
 }

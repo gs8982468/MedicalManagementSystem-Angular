@@ -8,7 +8,6 @@ import { CustomerFetchComponent } from './customer/customer-fetch/customer-fetch
 import { CustomerModule } from './customer/customer.module';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
-import { UserService } from './service/user.service';
 
 
 @NgModule({
@@ -24,7 +23,7 @@ import { UserService } from './service/user.service';
     HttpClientModule,
     FormsModule
   ],
-  providers: [UserService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
