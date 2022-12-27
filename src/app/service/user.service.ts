@@ -11,8 +11,12 @@ export class UserService {
 
   constructor(private httpClient:HttpClient) { }
 
-  getUser():Observable<User>{
-    return this.httpClient.get<User>(`${this.baseUrl}`);
+  // getUser():Observable<User>{
+  //   return this.httpClient.get<User>(`${this.baseUrl}`);
+  // }
 
+  getUser(){
+    console.log("In service::: ");
+    return this.httpClient.get(`${this.baseUrl}`);
   }
 }
