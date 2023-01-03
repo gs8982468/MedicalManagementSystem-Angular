@@ -8,6 +8,9 @@ import { CustomerFetchComponent } from './customer/customer-fetch/customer-fetch
 import { CustomerModule } from './customer/customer.module';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
+// import { UserRegistration } from './model/UserRegistration';
+import { RegisterUserComponent } from './customer/register-user/register-user.component';
+
 
 
 @NgModule({
@@ -15,13 +18,14 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     CustomerFetchComponent,
     HomeComponent
+    // RegisterUserComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     CustomerModule,
-    HttpClientModule,
-    FormsModule
+    HttpClientModule    
   ],
   providers: [],
   bootstrap: [AppComponent]
