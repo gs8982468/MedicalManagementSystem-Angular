@@ -23,13 +23,13 @@ export class RegisterUserComponent implements OnInit{
   registerUserFormGroup= new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    userName: new FormControl('', Validators.required),
-    emailAddress: new FormControl('', Validators.email),
-    phoneCode: new FormControl('', ),
+    userName: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)]) ),
+    emailAddress: new FormControl('',Validators.compose([Validators.required, Validators.email]) ),
+    phoneCode: new FormControl('', Validators.compose([Validators.required, Validators.maxLength(2)]) ),
     mobileNumber: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
     confirmPassword: new FormControl('', Validators.required),
-    verificationCode: new FormControl('', )
+    verificationCode: new FormControl('')
   });
 
 
@@ -95,6 +95,10 @@ export class RegisterUserComponent implements OnInit{
     console.log("Verification completed");
     console.log(this.registerUserFormGroup.controls['verificationCode']?.value?.toString())
     this.router.navigate(['/home']);
+  }
+
+  get checkValidation(){
+    return this.registerUserFormGroup.controls;
   }
 
 }
