@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Route, Router } from '@angular/router';
 import { UserRegistrationResponse } from 'src/app/model/ResponseModel/UserRegistrationResponse';
 import { UserRegistration } from 'src/app/model/UserRegistration';
@@ -10,31 +11,69 @@ import { UserService } from 'src/app/service/user.service';
   styleUrls: ['./register-user.component.css']
 })
 export class RegisterUserComponent implements OnInit{
-  userRegistration: UserRegistration= new UserRegistration();
+  isVerificationCodeSent: boolean= false;
+  isSubmitted: boolean= false;
+  userRegistration!: UserRegistration;//= new UserRegistration();
   userRegistrationResponse: UserRegistrationResponse= new UserRegistrationResponse();
 
   constructor(private userService: UserService, private router: Router) {}
 
 
+  // registerUserFormGroup!:FormGroup;
+  registerUserFormGroup= new FormGroup({
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
+    userName: new FormControl('', Validators.required),
+    emailAddress: new FormControl('', Validators.email),
+    phoneCode: new FormControl('', ),
+    mobileNumber: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    confirmPassword: new FormControl('', Validators.required),
+    verificationCode: new FormControl('', )
+  });
+
+
   ngOnInit(): void {
+    
 
   }
 
   onSubmit(){
-    // userRegistrationResponse1: any;
+    console.log("Entering into onSubmit method ");
+    console.log(this.registerUserFormGroup.controls['firstName']?.value?.toString());
+    this.createRegisterUserRequest();
+
     console.log(this.userRegistration);
-    console.log("Hi I am in onSubmit method");
-    this.userRegistrationResponse =  this.registerUser();
-    // console.log(this.userRegistrationResponse.registrationStatus);
-    alert(this.userRegistrationResponse);
-    console.log(this.userRegistrationResponse.registrationStatus);
-    this.router.navigate(['/home']);
+    this.isVerificationCodeSent= true;
+    this.isSubmitted= true;
+    // this.userRegistrationResponse =  this.registerUser();
+    // this.router.navigate(['/home']);
   }
 
-  onCancel(){
+  private createRegisterUserRequest() {
+    this.userRegistration = {
+      firstName: this.registerUserFormGroup.controls['firstName']?.value?.toString(),
+      lastName: this.registerUserFormGroup.controls['lastName']?.value?.toString(),
+      userName: this.registerUserFormGroup.controls['userName']?.value?.toString(),
+      emailAddress: this.registerUserFormGroup.controls['emailAddress']?.value?.toString(),
+      phoneCode: this.registerUserFormGroup.controls['phoneCode']?.value?.toString(),
+      mobileNumber: this.registerUserFormGroup.controls['mobileNumber']?.value?.toString(),
+      password: this.registerUserFormGroup.controls['password']?.value?.toString(),
+      confirmPassword: this.registerUserFormGroup.controls['confirmPassword']?.value?.toString()
+    };
+  }
+
+  onCancel(action: string){
+    this.isVerificationCodeSent= false;
+    
     console.log("Hi I am in onCancel method");
-   
-    this.router.navigate(['/home']);
+    if(action ==='cancelFromVerify'){
+      this.isSubmitted= false;
+      this.router.navigate(['/registration']);
+    }else if(action === 'cancelFromRegister'){
+      this.router.navigate(['/home']);
+    }
+
   }
 
   registerUser(): any{
@@ -44,8 +83,18 @@ export class RegisterUserComponent implements OnInit{
         // console.log(ata);
         this.userRegistrationResponse=data;
         return this.userRegistrationResponse;
-      }, error=> console.log(error)
+      }, error=> {
+        console.warn(error);
+        alert(error);
+      }
+        
       );
+  }
+
+  onVerificationCodeSubmit(){
+    console.log("Verification completed");
+    console.log(this.registerUserFormGroup.controls['verificationCode']?.value?.toString())
+    this.router.navigate(['/home']);
   }
 
 }

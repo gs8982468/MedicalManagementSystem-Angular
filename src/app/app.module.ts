@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { CustomerFetchComponent } from './customer/customer-fetch/customer-fetch.component';
 import { CustomerModule } from './customer/customer.module';
 import { HomeComponent } from './home/home.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { UserRegistration } from './model/UserRegistration';
 import { RegisterUserComponent } from './customer/register-user/register-user.component';
 
@@ -25,7 +25,8 @@ import { RegisterUserComponent } from './customer/register-user/register-user.co
     FormsModule,
     AppRoutingModule,
     CustomerModule,
-    HttpClientModule    
+    HttpClientModule ,
+    ReactiveFormsModule   
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -9,7 +9,7 @@ import { UserService } from './service/user.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'medical-management-system-angular';
+  // title = 'Medical app';
   user: any;
   constructor(private userService: UserService) {}
 
