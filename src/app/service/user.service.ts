@@ -10,6 +10,7 @@ import { UserRegistration } from '../model/UserRegistration';
 export class UserService {
   private baseUrl="http://localhost:80/internal/mms-portal/medicalManagementSystem/v1/customer/fetchUser/gs8982468";
   private registerUrl= "http://localhost:80/internal/mms-portal/medicalManagementSystem/v1/customer/registration";
+  private sendVerificationUrl= "http://localhost:80/internal/mms-portal/medicalManagementSystem/v1/customer/verification";
 
   constructor(private httpClient:HttpClient) { }
 
@@ -21,7 +22,13 @@ export class UserService {
     return this.httpClient.get(`${this.baseUrl}`);
   }
 
+  sendVerification(userRegistration: UserRegistration): Observable<any>{
+    return this.httpClient.post(`${this.sendVerificationUrl}`, userRegistration)
+  }
+
   registerUser(userRegistration: UserRegistration): Observable<any>{
     return this.httpClient.post(`${this.registerUrl}`, userRegistration)
   }
+
+
 }

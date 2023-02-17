@@ -1,5 +1,5 @@
 <div class="col-md-6 offset-md-3">
-    <form [formGroup]="registerUserFormGroup" (ngSubmit)="onSubmit()">
+    <form [formGroup]="registerUserFormGroup" (ngSubmit)="sendVerificationCode()">
         <div *ngIf="isSubmitted===false">
             <div class="form-group">
                 <label>First Name</label>
@@ -54,7 +54,7 @@
 
 
             <button class="btn btn-success" type="button" style="margin-left:100px"
-                (click)="onSubmit()" [disabled]="!registerUserFormGroup.valid">Submit
+                (click)="sendVerificationCode()" [disabled]="!registerUserFormGroup.valid">Send OTP
             </button>
 
             <button class="btn btn-success" type="button" style="margin-right:100px"
@@ -71,11 +71,17 @@
 
 
             <button class="btn btn-success" type="button" style="margin-left:auto;"
-                (click)="onVerificationCodeSubmit()">verify</button>
+                (click)="onSubmit()">Final Submit for Registration</button>
             <button class="btn btn-success" type="button" style="margin-right:100px"
                 (click)="onCancel('cancelFromVerify')">Cancel</button>
 
 
+        </div>
+
+        <div *ngIf="isRegistrationSuccessful">
+            <h2>Registration Successful</h2>
+            <button class="btn btn-success" type="button" style="margin-right:100px"
+                (click)="navigateToRegistrationPage()">Go Back to registration page</button>
         </div>
 
 

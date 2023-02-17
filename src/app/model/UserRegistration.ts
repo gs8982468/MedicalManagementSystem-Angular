@@ -14,9 +14,11 @@ export class UserRegistration {
     password?: string;
     
     confirmPassword?: string;
+
+    verificationCode?: string;
     
     constructor(firstName: string,lastName: string,userName: string,emailAddress: string,
-         phoneCode: string, mobileNumber: string,password: string,confirmPassword: string  ){
+         phoneCode: string, mobileNumber: string,password: string,confirmPassword: string, verificationCode: string  ){
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -25,6 +27,7 @@ export class UserRegistration {
         this.mobileNumber = mobileNumber;
         this.password = password;
         this.confirmPassword = confirmPassword;
+        this.verificationCode = verificationCode;
     }
 
 }

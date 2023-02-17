@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { UserRegistration } from './model/UserRegistration';
 import { RegisterUserComponent } from './customer/register-user/register-user.component';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { NgxUiLoaderHttpModule } from 'ngx-ui-loader';
 
 
 
@@ -26,7 +28,9 @@ import { RegisterUserComponent } from './customer/register-user/register-user.co
     AppRoutingModule,
     CustomerModule,
     HttpClientModule ,
-    ReactiveFormsModule   
+    ReactiveFormsModule,
+    NgxUiLoaderModule,
+    NgxUiLoaderHttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]
