@@ -56,7 +56,6 @@ export class RegisterUserComponent implements OnInit{
     this.userService.registerUser(otpVerificationRequest).subscribe(data=>
       {
         this.processRegisterUserResponse(data);
-        return data;
       }, error=> {
         console.warn(error);
         Swal.fire('This is a simple and sweet alert')
@@ -115,9 +114,7 @@ export class RegisterUserComponent implements OnInit{
 
   callSendVerification(otpVerificationRequest: UserRegistration){
     this.userService.sendVerification(otpVerificationRequest).subscribe(data => {
-      console.log(data);
       this.processSendOtpResponse(data, otpVerificationRequest);
-      return data;
     }, error => {
       console.warn(error.message);
       Swal.fire('oops...', 'Something went wrong in the server', 'error');
