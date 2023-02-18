@@ -1,9 +1,9 @@
 import { ErrorResponseMessages } from "./ErrorResponseMessages";
 
 export class OTPManagerResponse {
-    mailSentWithOTP?:boolean;
+    mailSentWithOTP!: boolean;
 
-    mailSentTime?: string;
+    mailSentTime!: string;
 
-    errorResponseMessages?: ErrorResponseMessages[];
+    errorResponseMessages!: ErrorResponseMessages[];
 }

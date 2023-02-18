@@ -15,196 +15,140 @@ import Swal from 'sweetalert2';
 })
 export class RegisterUserComponent implements OnInit{
   show: boolean = false;
-  isVerificationCodeSent: boolean= false;
+  showRegisterButton: boolean= false;
   isSubmitted: boolean= false;
   isRegistrationSuccessful: boolean = false;
 
-  errorList: any = [];
-
-  userRegistration!: UserRegistration;//= new UserRegistration();
-  userRegistrationResponse: UserRegistrationResponse= new UserRegistrationResponse();
-  otpManagerResponse: OTPManagerResponse= new OTPManagerResponse();
-
   constructor(private userService: UserService, 
     private router: Router
-    // private sprinner : NgxSpinnerService
     )
      {}
 
      password() {
       this.show = !this.show;
       }
-
-  // registerUserFormGroup!:FormGroup;
   personalDataFormGroup= new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    userName: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)]) ),
-    emailAddress: new FormControl('',Validators.compose([Validators.required, Validators.email]) ),
-    phoneCode: new FormControl('', Validators.compose([Validators.required, Validators.maxLength(3)]) ),
-    mobileNumber: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
-    confirmPassword: new FormControl('', Validators.required)
+    firstName: new FormControl('Subhankar', Validators.required),
+    lastName: new FormControl('Guchhait', Validators.required),
+    userName: new FormControl('gs8982468', Validators.compose([Validators.required, Validators.minLength(6)]) ),
+    emailAddress: new FormControl('gs8982468@gmail.com',Validators.compose([Validators.required, Validators.email]) ),
+    phoneCode: new FormControl('+91', Validators.compose([Validators.required, Validators.maxLength(3)]) ),
+    mobileNumber: new FormControl('9564961878', Validators.required),
+    password: new FormControl('1234', Validators.required),
+    confirmPassword: new FormControl('1234', Validators.required)
   });
-  otpFormGroup= new FormGroup({
-    verificationCode: new FormControl('', Validators.required)
-  })
+  otpFormGroup= new FormGroup({verificationCode: new FormControl('', Validators.required)})
 
 
   ngOnInit(): void {
-    // this.sprinner.show()
-
   }
 
-  sendVerificationCode(){
-    // this.sprinner.show()
-    console.log("Entering into onSubmit method ");
-    console.log(this.personalDataFormGroup.controls['firstName']?.value?.toString());
-    this.createSendOtpRequest();
-    console.log(this.userRegistration);
-    this.otpManagerResponse =  this.sendVerification();
+
+
+  onClickRegister(){
+    let otpVerificationRequest:UserRegistration= new UserRegistration();
+    let userRegistrationResponse: UserRegistrationResponse= new UserRegistrationResponse();
+    this.createCommonRequestForSubmitAndSendOTP(otpVerificationRequest, true);
+    this.registerUser(otpVerificationRequest);
   }
 
-  onSubmit(){
-    // this.sprinner.show()
-    console.log("Entering into onSubmit method ");
-    console.log(this.personalDataFormGroup.controls['firstName']?.value?.toString());
-    this.createSendOtpRequest();
-
-    console.log(this.userRegistration);
-    this.isVerificationCodeSent= true;
-    this.isSubmitted= true;
-    this.createRegisterRequest();
-    this.userRegistrationResponse =  this.registerUser();
-    // this.router.navigate(['/home']);
-  }
-
-  private createSendOtpRequest() {
-    this.userRegistration = {
-      firstName: this.personalDataFormGroup.controls['firstName']?.value?.toString(),
-      lastName: this.personalDataFormGroup.controls['lastName']?.value?.toString(),
-      userName: this.personalDataFormGroup.controls['userName']?.value?.toString(),
-      emailAddress: this.personalDataFormGroup.controls['emailAddress']?.value?.toString(),
-      phoneCode: this.personalDataFormGroup.controls['phoneCode']?.value?.toString(),
-      mobileNumber: this.personalDataFormGroup.controls['mobileNumber']?.value?.toString(),
-      password: this.personalDataFormGroup.controls['password']?.value?.toString(),
-      confirmPassword: this.personalDataFormGroup.controls['confirmPassword']?.value?.toString(),
-      // verificationCode: this.otpFormGroup.controls['verificationCode']?.value?.toString()
-    };
-  }
-
-  private createRegisterRequest() {
-    this.userRegistration = {
-      firstName: this.personalDataFormGroup.controls['firstName']?.value?.toString(),
-      lastName: this.personalDataFormGroup.controls['lastName']?.value?.toString(),
-      userName: this.personalDataFormGroup.controls['userName']?.value?.toString(),
-      emailAddress: this.personalDataFormGroup.controls['emailAddress']?.value?.toString(),
-      phoneCode: this.personalDataFormGroup.controls['phoneCode']?.value?.toString(),
-      mobileNumber: this.personalDataFormGroup.controls['mobileNumber']?.value?.toString(),
-      password: this.personalDataFormGroup.controls['password']?.value?.toString(),
-      confirmPassword: this.personalDataFormGroup.controls['confirmPassword']?.value?.toString(),
-      verificationCode: this.otpFormGroup.controls['verificationCode']?.value?.toString()
-    };
-  }
-
-  onCancel(action: string){
-    this.isVerificationCodeSent= false;
-    
-    console.log("Hi I am in onCancel method");
-    if(action ==='cancelFromVerify'){
-      this.isSubmitted= false;
-      this.router.navigate(['/registration']);
-    }else if(action === 'cancelFromRegister'){
-      this.router.navigate(['/home']);
-    }
-
-  }
-
-  navigateToRegistrationPage(){
-    // this.sprinner.show()
-    this.isVerificationCodeSent= false;
-    this.isRegistrationSuccessful= false;
-    this.isSubmitted= false;
-    this.personalDataFormGroup.reset();
-    this.router.navigate(['/registration']);
-  }
-
-  registerUser(): any{
-    this.userService.registerUser(this.userRegistration).subscribe(data=>
+  registerUser(otpVerificationRequest: UserRegistration){
+    this.userService.registerUser(otpVerificationRequest).subscribe(data=>
       {
-        console.log("Line no 42: (registerUser method)", data);
-        // console.log(ata);
-        this.userRegistrationResponse=data;
-        if(this.userRegistrationResponse.otpMatched===false){
-          Swal.fire("Wrong OTP entered");
-        } else{
-          if(this.userRegistrationResponse.registrationStatus==='SUCCESS'){
-            Swal.fire("Registration successful");
-            this.personalDataFormGroup.reset();
-            this.otpFormGroup.reset();
-            this.enableTextBox();
-            this.isRegistrationSuccessful= true;
-            this.isVerificationCodeSent= false;
-          } else{
-            Swal.fire("Registration failed");
-          }
-        }
-        
-
-        
-
-        
-        return this.userRegistrationResponse;
+        this.processRegisterUserResponse(data);
+        return data;
       }, error=> {
         console.warn(error);
-        // alert("Something went wrong...\nIf it occurrs continously please send the screenshot of this page and send it to: gsubhankar2018@gmail.com");
         Swal.fire('This is a simple and sweet alert')
       }
         
       );
   }
 
-  sendVerification(): any{
-    this.userService.sendVerification(this.userRegistration).subscribe(data=>
-      {
-        console.log("Line no 109: (sendVerification method)", data);
-        // console.log(ata);
-        this.otpManagerResponse=data;
-        this.errorList= this.otpManagerResponse.errorResponseMessages;
-                
-        // if(this.otpManagerResponse.errorResponseMessages?.length === 0){
-          if(this.otpManagerResponse.mailSentWithOTP===true){
-            this.isVerificationCodeSent= true;
-            this.disabledTextBoxOnSendOtpButtonClick();
-            Swal.fire("OTP send to : ", this.userRegistration.emailAddress);
-          } else{
-            Swal.fire("OTP send failed");
-          }
-        // } else{
-        //   this.errorList= this.otpManagerResponse.errorResponseMessages;
-        //   // Swal.fire("the following error occurred: ", data.errorResponseMessages[0]?.errorMessage,
-        //   // data.errorResponseMessages[1]?.errorMessage);
-        // }
-        
-        // Swal.fire("OTP send to : ", this.userRegistration.emailAddress);
-        return this.otpManagerResponse;
-      }, error=> {
-        console.warn(error.message);
-        // alert("Something went wrong...\nIf it occurrs continously please send the screenshot of this page and send it to: gsubhankar2018@gmail.com");
-        // Swal.fire("Something went wrong...\nplease send the screenshot of this page to: gsubhankar2018@gmail.com");
-        Swal.fire('oops...', 'Something went wrong', 'error');
-        // Swal.fire({
-        //   title: 'Ooops...\nSomething went wrong',
-        //   showClass: {
-        //     popup: 'animate__animated animate__fadeInDown'
-        //   },
-        //   hideClass: {
-        //     popup: 'animate__animated animate__fadeOutUp'
-        //   }
-        // })
-      }
-        
-      );
+  private processRegisterUserResponse(userRegistrationResponse: UserRegistrationResponse) {
+    if (userRegistrationResponse.errorResponseMessages?.length === 0 && userRegistrationResponse.registrationStatus === 'SUCCESS') {
+      this.processSuccessRegisterResponse();
+    } else {
+      this.processFailedRegisterResponse(userRegistrationResponse);
+    }
+  }
+
+  private processSuccessRegisterResponse() {
+    Swal.fire("Registration successful");
+    this.personalDataFormGroup.reset();
+    this.otpFormGroup.reset();
+    this.enableTextBoxOnClickEditEntry();
+    this.showRegisterButton = false;
+    this.isRegistrationSuccessful = true;
+  }
+
+  private processFailedRegisterResponse(userRegistrationResponse: UserRegistrationResponse) {
+    let errorMessage: string = '';
+    let errorList: any = [];
+    errorList = userRegistrationResponse.errorResponseMessages;
+    for (let error of errorList) {
+      errorMessage = errorMessage + error.errorMessage + '<br/>' + '<br/>';
+    }
+    Swal.fire("Registration failed due to following reason: \n", errorMessage);
+  }
+
+  private createCommonRequestForSubmitAndSendOTP(commonRequest: UserRegistration, onVerificationCodeSend: boolean) {
+    commonRequest.firstName= this.personalDataFormGroup.controls['firstName']?.value?.toString();
+    commonRequest.lastName= this.personalDataFormGroup.controls['lastName']?.value?.toString();
+    commonRequest.userName= this.personalDataFormGroup.controls['userName']?.value?.toString();
+    commonRequest.emailAddress= this.personalDataFormGroup.controls['emailAddress']?.value?.toString();
+    commonRequest.phoneCode= this.personalDataFormGroup.controls['phoneCode']?.value?.toString();
+    commonRequest.mobileNumber= this.personalDataFormGroup.controls['mobileNumber']?.value?.toString();
+    commonRequest.password= this.personalDataFormGroup.controls['password']?.value?.toString();
+    commonRequest.confirmPassword= this.personalDataFormGroup.controls['confirmPassword']?.value?.toString();
+    if(onVerificationCodeSend===true){
+      commonRequest.verificationCode= this.otpFormGroup.controls['verificationCode']?.value?.toString()
+    }
+  }
+
+  onClickSendOtp() {
+    let otpManagerResponse: OTPManagerResponse = new OTPManagerResponse();
+    let otpVerificationRequest: UserRegistration = new UserRegistration();
+    this.createCommonRequestForSubmitAndSendOTP(otpVerificationRequest, false);
+    this.callSendVerification(otpVerificationRequest);
+  }
+
+  callSendVerification(otpVerificationRequest: UserRegistration){
+    this.userService.sendVerification(otpVerificationRequest).subscribe(data => {
+      console.log(data);
+      this.processSendOtpResponse(data, otpVerificationRequest);
+      return data;
+    }, error => {
+      console.warn(error.message);
+      Swal.fire('oops...', 'Something went wrong in the server', 'error');
+    }
+    );
+  }
+
+  private processSendOtpResponse(otpManagerResponse: OTPManagerResponse, otpVerificationRequest: UserRegistration) {
+    if (null !== otpManagerResponse.errorResponseMessages && otpManagerResponse.errorResponseMessages?.length === 0) {
+      this.processSuccessfulSendOtpResponse(otpManagerResponse, otpVerificationRequest);
+    } else {
+      this.processFailedSendOtpResponse(otpManagerResponse);
+    }
+  }
+
+  private processSuccessfulSendOtpResponse(otpManagerResponse: OTPManagerResponse, otpVerificationRequest: UserRegistration) {
+    console.log("line 167: onCLickSendOtp");
+    this.showRegisterButton = otpManagerResponse.mailSentWithOTP;
+    console.log("ShowButton: ", this.showRegisterButton);
+    this.disabledTextBoxOnSendOtpButtonClick();
+    Swal.fire("OTP send to : \n", otpVerificationRequest.emailAddress);
+  }
+
+  private processFailedSendOtpResponse(otpManagerResponse: OTPManagerResponse) {
+    let errorMessage: string = '';
+    let errorList: any = [];
+    errorList = otpManagerResponse.errorResponseMessages;
+    for (let error of errorList) {
+      errorMessage = errorMessage + error.errorMessage + '<br/>' + '<br/>';
+    }
+    Swal.fire("Please check the following error: \n", errorMessage);
   }
 
   private disabledTextBoxOnSendOtpButtonClick() {
@@ -218,7 +162,7 @@ export class RegisterUserComponent implements OnInit{
     this.personalDataFormGroup.get('confirmPassword')?.disable();
   }
 
-  enableTextBox(){
+  enableTextBoxOnClickEditEntry(){
     this.personalDataFormGroup.get('firstName')?.enable();
     this.personalDataFormGroup.get('lastName')?.enable();
     this.personalDataFormGroup.get('userName')?.enable();
@@ -227,7 +171,8 @@ export class RegisterUserComponent implements OnInit{
     this.personalDataFormGroup.get('mobileNumber')?.enable();
     this.personalDataFormGroup.get('password')?.enable();
     this.personalDataFormGroup.get('confirmPassword')?.enable();
-    this.isVerificationCodeSent= false;
+    this.showRegisterButton= false;
+   
   }
 
   onVerificationCodeSubmit(){
