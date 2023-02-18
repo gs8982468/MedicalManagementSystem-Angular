@@ -1,5 +1,165 @@
+<section class="h-100 gradient-form" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-10">
+          <div class="card rounded-3 text-black">
+            <div class="row g-0">
+              <div class="col-lg-6">
+                <div class="card-body p-md-5 mx-md-4">
+                  <div class="d-flex align-items-right justify-content-right pb-4">
+                    <!-- <p class="mb-0 me-2">Go to home page</p> -->
+                    <button type="button" class="btn btn-outline-danger" (click)="onClickHomeButton()">Home</button>
+                    <!-- <a routerLink="registration" routerLinkActive="active" class="nav-link">Registeration</a> -->
+                  </div>
+  
+                  <div class="text-center">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                      style="width: 185px;" alt="logo">
+                    <h4 class="mt-1 mb-5 pb-1">Sign up form</h4>
+                  </div>
+  
+                  <form [formGroup]="personalDataFormGroup" (ngSubmit)="sendVerificationCode()">
+                    <div class="form-outline mb-4">
+                        <input type="text" formControlName="firstName" class="form-control" placeholder="First Name">
+                        <!-- <span *ngIf="checkValidation['firstName'].getError('required')!=null" class="validateMessage">Enter first name</span> -->
+                    </div>
+  
+                    <div class="form-outline mb-4">
+                        <input type="text" formControlName="lastName" class="form-control" placeholder="Last Name">
+                        <!-- <span *ngIf="checkValidation['lastName'].getError('required')!=null" class="validateMessage">Enter last name</span> -->
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" formControlName="userName" class="form-control" placeholder="User name">
+                        <!-- <span *ngIf="checkValidation['userName'].getError('required')!=null" class="validateMessage">Enter user name</span>
+                        <span *ngIf="checkValidation['userName'].getError('minlength')!=null" class="validateMessage">User name must be at least 6 characters</span> -->
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="email" formControlName="emailAddress" class="form-control"  placeholder="Email address">
+                        <!-- <span *ngIf="checkValidation['emailAddress'].getError('required')!=null" class="validateMessage">Enter email address</span>
+                        <span *ngIf="checkValidation['emailAddress'].getError('email')!=null" class="validateMessage">Enter valid email address</span> -->
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <!-- <select>
+                          <option value="00">Select</option>
+                          <option value="+91">India</option>
+                          <option value="+92">Pakistan</option>
+                        </select> -->
+                        <input type="text" formControlName="phoneCode" class="form-control"  placeholder="Phone code">
+                        <!-- <span *ngIf="checkValidation['phoneCode'].getError('required')!=null" class="validateMessage">Enter phone code</span>
+                        <span *ngIf="checkValidation['phoneCode'].getError('maxlength')!=null" class="validateMessage">Phone code must be of 2 digit</span> -->
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="text" formControlName="mobileNumber" class="form-control" placeholder="Mobile number">
+                        <!-- <span *ngIf="checkValidation['mobileNumber'].getError('required')!=null" class="validateMessage">Enter mobile number</span> -->
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input [type]="show ? 'text' : 'password'"  formControlName="password" class="form-control" placeholder="Enter password">
+                        <button (click)="password()" type="button">{{show ? 'Show' : 'Hide'}}</button>
+                        <!-- <span *ngIf="checkValidation['password'].getError('required')!=null" class="validateMessage">Enter password</span> -->
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Enter confirm password">
+                        <!-- <span *ngIf="checkValidation['confirmPassword'].getError('required')!=null" class="validateMessage">Enter confirm password</span> -->
+                      </div>
+  
+                    <div class="text-center pt-1 mb-5 pb-1">
+                      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" style='margin-right:16px' type="button"  
+                            (click)="sendVerificationCode()" [disabled]="!personalDataFormGroup.valid" [disabled]="isVerificationCodeSent">
+                        Send Otp
+                    </button>
+                      <button *ngIf="isVerificationCodeSent" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" style='margin-right:16px' type="button"  
+                      (click)="enableTextBox()">
+                      Edit entry
+                  </button>
+                    </div>
+                    <!-- <div *ngIf="isVerificationCodeSent"> -->
+                      <!-- <div class="text-left pt-1 mb-4 pb-1" *ngIf="isVerificationCodeSent">
+                          <input type="text" formControlName="verificationCode" class="form-control" placeholder="Enter OTP"><br>
+                          <span *ngIf="checkValidation['verificationCode'].getError('required')!=null" class="validateMessage">Enter verification password</span> 
+
+                          <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button"  
+                            (click)="onSubmit()" [disabled]="!personalDataFormGroup.valid">
+                            Register
+                          </button>      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="button"  
+                          (click)="enableTextBox()">
+                          Edit entry
+                        </button>
+                      </div> -->
+                    <!-- </div> -->
+  
+                    <!-- <div class="d-flex align-items-center justify-content-center pb-4">
+                      <p class="mb-0 me-2">You already have an account?</p>
+                      <button type="button" class="btn btn-outline-danger" (click)="onClickRegistrationPage()">Log in</button>
+                      <a routerLink="registration" routerLinkActive="active" class="nav-link">Registeration</a> 
+                    </div> -->
+  
+                  </form>
+
+                  <form [formGroup]="otpFormGroup" (ngSubmit)="onSubmit()">
+                    <div class="text-center pt-1 mb-4 pb-1" *ngFor="let error of errorList">
+                      <p>{{error.errorMessage}}</p>
+                    </div>
+                    <div class="text-center pt-1 mb-4 pb-1" *ngIf="isVerificationCodeSent">
+                      <input type="text" formControlName="verificationCode" class="form-control" placeholder="Enter OTP"><br>
+                      <!-- <span *ngIf="checkValidation['verificationCode'].getError('required')!=null" class="validateMessage">Enter verification password</span> -->
+
+                      <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"  style='margin-right:16px' type="button"  
+                        (click)="onSubmit()" [disabled]="!otpFormGroup.valid">
+                        Register
+                      </button>
+                  </div>
+
+                  <div class="d-flex align-items-center justify-content-center pb-4">
+                    <p class="mb-0 me-2">You already have an account?</p>
+                    <button type="button" class="btn btn-outline-danger" (click)="onClickRegistrationPage()">Log in</button>
+                    <!-- <a routerLink="registration" routerLinkActive="active" class="nav-link">Registeration</a> -->
+                  </div>
+
+                  <!-- <div class="d-flex align-items-center justify-content-center pb-4">
+                    <p class="mb-0 me-2">Go to home page</p>
+                    <button type="button" class="btn btn-outline-danger" (click)="onClickHomeButton()">Home</button>
+                    <a routerLink="registration" routerLinkActive="active" class="nav-link">Registeration</a>
+                  </div> -->
+
+                  </form>
+  
+                </div>
+              </div>
+              <!-- This is separate section -->
+              <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                  <h4 class="mb-4">Welcome to Medical management system portal</h4>
+                  <p class="small mb-0">This is medical management system portal. Patient can register themselves and book for dr appointment...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
 <div class="col-md-6 offset-md-3">
-    <form [formGroup]="registerUserFormGroup" (ngSubmit)="sendVerificationCode()">
+    <form [formGroup]="personalDataFormGroup" (ngSubmit)="sendVerificationCode()">
         <div *ngIf="isSubmitted===false">
             <div class="form-group">
                 <label>First Name</label>
@@ -54,7 +214,7 @@
 
 
             <button class="btn btn-success" type="button" style="margin-left:100px"
-                (click)="sendVerificationCode()" [disabled]="!registerUserFormGroup.valid">Send OTP
+                (click)="sendVerificationCode()" [disabled]="!personalDataFormGroup.valid">Send OTP
             </button>
 
             <button class="btn btn-success" type="button" style="margin-right:100px"
@@ -66,7 +226,7 @@
             <div class="form-group">
                 <label>Verification code</label>
                 <input type="text" formControlName="verificationCode" class="form-control">
-                <!-- <span *ngIf="checkValidation['verificationCode'].getError('required')!=null" class="validateMessage">Enter verification password</span> -->
+                <span *ngIf="checkValidation['verificationCode'].getError('required')!=null" class="validateMessage">Enter verification password</span>
             </div>
 
 
@@ -87,4 +247,4 @@
 
     </form>
 
-</div>
+</div> -->

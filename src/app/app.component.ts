@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs/internal/Subject';
-import { User } from './model/User';
 import { UserService } from './service/user.service';
 
 @Component({
@@ -14,6 +13,11 @@ export class AppComponent {
   user: any;
   constructor(private userService: UserService,
     private router: Router) {}
+
+    ngOnInit(): void {
+      this.router.navigate(['/home']);
+    }
+  
 
   fetchUser(){
     this.userService.getUser().subscribe((data)=>{

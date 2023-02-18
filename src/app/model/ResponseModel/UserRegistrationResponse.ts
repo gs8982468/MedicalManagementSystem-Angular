@@ -9,5 +9,7 @@ export class UserRegistrationResponse {
 
     registrationSuccessful?: string;
 
+    otpMatched?: boolean;
+
     errorResponseMessages?: ErrorResponseMessages[];
 }
