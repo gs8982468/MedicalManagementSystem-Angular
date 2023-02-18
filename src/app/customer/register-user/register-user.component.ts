@@ -28,14 +28,14 @@ export class RegisterUserComponent implements OnInit{
       this.show = !this.show;
       }
   personalDataFormGroup= new FormGroup({
-    firstName: new FormControl('Subhankar', Validators.required),
-    lastName: new FormControl('Guchhait', Validators.required),
-    userName: new FormControl('gs8982468', Validators.compose([Validators.required, Validators.minLength(6)]) ),
-    emailAddress: new FormControl('gs8982468@gmail.com',Validators.compose([Validators.required, Validators.email]) ),
-    phoneCode: new FormControl('+91', Validators.compose([Validators.required, Validators.maxLength(3)]) ),
-    mobileNumber: new FormControl('9564961878', Validators.required),
-    password: new FormControl('1234', Validators.required),
-    confirmPassword: new FormControl('1234', Validators.required)
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
+    userName: new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)]) ),
+    emailAddress: new FormControl('',Validators.compose([Validators.required, Validators.email]) ),
+    phoneCode: new FormControl('', Validators.compose([Validators.required, Validators.maxLength(3)]) ),
+    mobileNumber: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    confirmPassword: new FormControl('', Validators.required)
   });
   otpFormGroup= new FormGroup({verificationCode: new FormControl('', Validators.required)})
 
