@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs/internal/Subject';
-import { User } from './model/User';
 import { UserService } from './service/user.service';
 
 @Component({
@@ -9,9 +9,15 @@ import { UserService } from './service/user.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'medical-management-system-angular';
+  // title = 'Medical app';
   user: any;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService,
+    private router: Router) {}
+
+    ngOnInit(): void {
+      this.router.navigate(['/home']);
+    }
+  
 
   fetchUser(){
     this.userService.getUser().subscribe((data)=>{
@@ -21,6 +27,10 @@ export class AppComponent {
     })  
   }
   
+  onClickRegistrationPage(){
+      // this.router.navigate(['register']);
+      this.router.navigate(['/registration']);
+  }
 
 
 
